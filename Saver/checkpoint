@@ -1,0 +1,3 @@
+model_checkpoint_path: "E:\\CODE\\Python\\TensorFlowTest\\Saver\\model.ckpt-1999"
+all_model_checkpoint_paths: "E:\\CODE\\Python\\TensorFlowTest\\Saver\\model.ckpt-999"
+all_model_checkpoint_paths: "E:\\CODE\\Python\\TensorFlowTest\\Saver\\model.ckpt-1999"
