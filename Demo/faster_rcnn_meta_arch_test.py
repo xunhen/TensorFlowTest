@@ -19,7 +19,7 @@ from absl.testing import parameterized
 import numpy as np
 import tensorflow as tf
 
-from object_detection.meta_architectures import faster_rcnn_meta_arch_test_lib
+import Demo.faster_rcnn_meta_arch_test_lib as faster_rcnn_meta_arch_test_lib
 
 
 class FasterRCNNMetaArchTest(

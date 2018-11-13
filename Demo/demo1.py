@@ -12,7 +12,6 @@ from io import StringIO
 from matplotlib import pyplot as plt
 from PIL import Image
 import tensorflow.contrib.slim as slim
-slim.separable_conv2d
 sys.path.append(r'D:\Software\Miniconda\envs\tensorflow\Lib\site-packages\tensorflow\models\research')
 
 from object_detection.utils import ops as utils_ops
@@ -26,7 +25,7 @@ from utils import visualization_utils as vis_util
 PATH = r'D:\Software\Miniconda\envs\tensorflow\Lib\site-packages\tensorflow\models\research\object_detection'
 
 # What model to download.
-MODEL_NAME = 'ssd_mobilenet_v1_coco_2017_11_17'
+MODEL_NAME = 'faster_rcnn_resnet50_coco_2018_01_28'
 MODEL_FILE = MODEL_NAME + '.tar.gz'
 DOWNLOAD_BASE = 'http://download.tensorflow.org/models/object_detection/'
 
@@ -39,18 +38,21 @@ PATH_TO_LABELS = os.path.join(PATH, 'data', 'mscoco_label_map.pbtxt')
 opener = urllib.request.URLopener()
 opener.retrieve(DOWNLOAD_BASE + MODEL_FILE, MODEL_FILE)
 tar_file = tarfile.open(MODEL_FILE)
+print('11')
 for file in tar_file.getmembers():
     file_name = os.path.basename(file.name)
     if 'frozen_inference_graph.pb' in file_name:
         tar_file.extract(file, os.getcwd())
 
 detection_graph = tf.Graph()
+print('1')
 with detection_graph.as_default():
     od_graph_def = tf.GraphDef()
     with tf.gfile.GFile(PATH_TO_FROZEN_GRAPH, 'rb') as fid:
         serialized_graph = fid.read()
         od_graph_def.ParseFromString(serialized_graph)
         tf.import_graph_def(od_graph_def, name='')
+
 
 category_index = label_map_util.create_category_index_from_labelmap(PATH_TO_LABELS, use_display_name=True)
 
@@ -128,6 +130,7 @@ for image_path in TEST_IMAGE_PATHS:
     image_np_expanded = np.expand_dims(image_np, axis=0)
     # Actual detection.
     output_dict = run_inference_for_single_image(image_np, detection_graph)
+
     # Visualization of the results of a detection.
     vis_util.visualize_boxes_and_labels_on_image_array(
         image_np,
@@ -140,5 +143,5 @@ for image_path in TEST_IMAGE_PATHS:
         line_thickness=8)
     plt.figure(figsize=IMAGE_SIZE)
     plt.imshow(image_np)
-    print(output_dict['detection_classes'])
+    print(output_dict['detection_scores'])
 plt.show()
