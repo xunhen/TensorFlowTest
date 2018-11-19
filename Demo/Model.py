@@ -252,6 +252,7 @@ def load_image_into_numpy_array(image):
         (im_height, im_width, 3)).astype(np.uint8)
 
 
+
 def convert(output_dict):
     # Get handles to input and output tensors
     ops = tf.get_default_graph().get_operations()
@@ -318,10 +319,17 @@ if __name__ == '__main__':
         output_dict = model.postprocess(prediction_dict, true_image_shapes)
 
         saver = tf.train.Saver()
+        summary = tf.summary.merge_all()
         save_path = 'E:\\CODE\\Python\\TensorFlowTest\\Demo\\faster_rcnn_resnet50_coco_2018_01_28\\faster_rcnn_resnet50_coco_2018_01_28\\model.ckpt'
 
         with tf.Session() as sess:
             saver.restore(sess, save_path)
+            path = 'E:\\CODE\\Python\\TensorFlowTest\\Demo\\log'
+            train_summary = tf.summary.FileWriter(path, sess.graph)
+
+            run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
+            run_metadata = tf.RunMetadata()
+            i=0
             for image_path in TEST_IMAGE_PATHS:
                 image = Image.open(image_path)
                 # the array based representation of the image will be used later in order to prepare the
@@ -330,7 +338,8 @@ if __name__ == '__main__':
                 # Expand dimensions since the model expects images to have shape: [1, None, None, 3]
                 image_np_expanded = np.expand_dims(image_np, axis=0)
 
-                output_dict_ = sess.run(output_dict, feed_dict={image_tensor: image_np_expanded})
+                output_dict_ = sess.run(output_dict, feed_dict={image_tensor: image_np_expanded},options=run_options,
+                            run_metadata=run_metadata)
                 output_dict_['detection_classes'][0] += 1
                 # Actual detection.
                 # output_dict = run_inference_for_single_image(image_np, detection_graph)
@@ -347,6 +356,12 @@ if __name__ == '__main__':
                 plt.figure(figsize=IMAGE_SIZE)
                 plt.imshow(image_np)
                 print(output_dict_['detection_scores'])
+                i+=1
+                train_summary.add_run_metadata(run_metadata, 'image%03d' % i)
+                train_summary.flush()
+                saver.save(sess, os.path.join(path, 'model.ckpt'))
+
+            train_summary.close()
             plt.show()
 
         pass
