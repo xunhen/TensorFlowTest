@@ -2,12 +2,19 @@ import os
 import lxml.etree as etree
 
 
-def generate(path, outputName):
+def generate_about_xml(path, outputName):
     output = os.path.join(path, outputName)
     with open(output, mode='w') as out:
         for file in os.listdir(path):
             if file.endswith('.xml'):
                 out.write(file.split('.')[0] + '\n')
+
+def generate_about_txt(path, outputName):
+    output = os.path.join(path, outputName)
+    with open(output, mode='w') as out:
+        for file in os.listdir(path):
+            if file.endswith('org.txt'):
+                out.write(file[0:-7] + '\n')
 
 
 def changeXML(path, default='MOTFromWinDataSet'):
@@ -32,6 +39,5 @@ def changeXML(path, default='MOTFromWinDataSet'):
 
 
 if __name__ == '__main__':
-    PATH = 'F:\\PostGraduate\\DataSet\\MOTFromWinDataSet'
-    # generate(path=PATH, outputName='train.txt')
-    changeXML(PATH)
+    PATH = 'F:\\PostGraduate\\DataSet\\Others\\CarDataSetForHe\\CarDataSetForHe'
+    generate_about_txt(path=PATH, outputName='train.txt')

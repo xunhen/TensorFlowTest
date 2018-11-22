@@ -86,8 +86,8 @@ flags.DEFINE_string('model_config_path', '',
 
 FLAGS = flags.FLAGS
 
-FLAGS.train_dir='E:\\CODE\\Python\\TensorFlowTest\\Faster_RCNN\\Log'
-FLAGS.pipeline_config_path='E:\\CODE\\Python\\TensorFlowTest\\Faster_RCNN\\Model\\pipeline.config'
+FLAGS.train_dir='E:\\CODE\\Python\\TensorFlowTest\\Faster_RCNN\\Log\\log_multi'
+FLAGS.pipeline_config_path='E:\\CODE\\Python\\TensorFlowTest\\Faster_RCNN\\Model\\pipeline_vgg_muti.config'
 
 
 @tf.contrib.framework.deprecated(None, 'Use object_detection/model_main.py.')
@@ -116,7 +116,7 @@ def main(_):
   model_config = configs['model']
   train_config = configs['train_config']
   input_config = configs['train_input_config']
-
+  print(model_config.faster_rcnn.feature_extractor.first_stage_features_stride)
   model_fn = functools.partial(
       model_builder.build,
       model_config=model_config,

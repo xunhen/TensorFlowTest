@@ -55,6 +55,7 @@ from object_detection.utils import ops
 
 from Faster_RCNN import config
 from Faster_RCNN.Model import faster_rcnn_meta_arch
+from Faster_RCNN.Model import  faster_rcnn_vgg16_feature_extractor
 
 # A map of names to SSD feature extractors.
 SSD_FEATURE_EXTRACTOR_CLASS_MAP = {
@@ -97,6 +98,8 @@ FASTER_RCNN_FEATURE_EXTRACTOR_CLASS_MAP = {
         frcnn_resnet_v1.FasterRCNNResnet101FeatureExtractor,
     'faster_rcnn_resnet152':
         frcnn_resnet_v1.FasterRCNNResnet152FeatureExtractor,
+    'faster_rcnn_vgg16':
+        faster_rcnn_vgg16_feature_extractor.FasterRCNNVGG16FeatureExtractor
 }
 
 

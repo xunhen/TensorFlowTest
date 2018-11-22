@@ -21,7 +21,7 @@ import numpy as np
 import PIL.Image
 import tensorflow as tf
 
-from Faster_RCNN import create_pascal_tf_record
+from Faster_RCNN.Tools import create_pascal_tf_record
 
 
 class CreatePascalTFRecordTest(tf.test.TestCase):

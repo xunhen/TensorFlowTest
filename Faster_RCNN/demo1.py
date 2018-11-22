@@ -31,7 +31,7 @@ from utils import label_map_util
 from Faster_RCNN import config
 
 from utils import visualization_utils as vis_util
-
+slim.conv2d
 
 def load_image_into_numpy_array(image):
     (im_width, im_height) = image.size
@@ -90,12 +90,13 @@ if __name__ == '__main__':
     # image2.jpg
     # If you want to test the code with your images, just add path to the images to the TEST_IMAGE_PATHS.
     PATH_TO_TEST_IMAGES_DIR = 'F:\PostGraduate\DataSet\MOTFromWinDataSet'
-    TEST_IMAGE_PATHS = [os.path.join(PATH_TO_TEST_IMAGES_DIR, '00000{}'.format(i)) for i in range(1, 2)]
+    TEST_IMAGE_PATHS = [os.path.join(PATH_TO_TEST_IMAGES_DIR, '00000{}'.format(i)) for i in range(1, 4)]
 
     # Size, in inches, of the output images.
     IMAGE_SIZE = (12, 8)
 
-    pipeline_config_path = 'E:\\CODE\\Python\\TensorFlowTest\\Faster_RCNN\\Model\\pipeline.config'
+    pipeline_config_path = 'E:\\CODE\\Python\\TensorFlowTest\\Faster_RCNN\\Model\\pipeline_muti.config'
+    #pipeline_config_path = 'E:\\CODE\\Python\\TensorFlowTest\\Faster_RCNN\\Log_Temp\\pipeline.config'
     configs = config_util.get_configs_from_pipeline_file(pipeline_config_path)
     model_config = configs['model']
     train_config = configs['train_config']
@@ -118,11 +119,11 @@ if __name__ == '__main__':
 
         saver = tf.train.Saver()
         summary = tf.summary.merge_all()
-        save_path = 'E:\\CODE\\Python\\TensorFlowTest\\Faster_RCNN\\Log\\model.ckpt-1993'
+        save_path = 'E:\\CODE\\Python\\TensorFlowTest\\Faster_RCNN\\Log\\model.ckpt-6279'
 
         with tf.Session() as sess:
             saver.restore(sess, save_path)
-            path = 'E:\\CODE\\Python\\TensorFlowTest\\Faster_RCNN\\Log_2'
+            path = 'E:\\CODE\\Python\\TensorFlowTest\\Faster_RCNN\\Log\\Log_2'
             train_summary = tf.summary.FileWriter(path, sess.graph)
 
             run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
@@ -162,7 +163,6 @@ if __name__ == '__main__':
                                         options=run_options,
                                         run_metadata=run_metadata)
 
-                print(prediction_dict_)
                 output_dict_['detection_classes'][0] += 1
                 # Actual detection.
                 # output_dict = run_inference_for_single_image(image_np, detection_graph)
@@ -179,6 +179,7 @@ if __name__ == '__main__':
                 plt.figure(figsize=IMAGE_SIZE)
                 plt.imshow(image_np)
                 print(output_dict_['detection_scores'])
+                print(output_dict_['detection_classes'])
                 i += 1
                 train_summary.add_run_metadata(run_metadata, 'image%03d' % i)
                 train_summary.flush()

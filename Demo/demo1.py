@@ -25,7 +25,7 @@ from utils import visualization_utils as vis_util
 PATH = r'D:\Software\Miniconda\envs\tensorflow\Lib\site-packages\tensorflow\models\research\object_detection'
 
 # What model to download.
-MODEL_NAME = 'faster_rcnn_resnet50_coco_2018_01_28'
+MODEL_NAME = 'faster_rcnn_inception_v2_coco_2018_01_28'
 MODEL_FILE = MODEL_NAME + '.tar.gz'
 DOWNLOAD_BASE = 'http://download.tensorflow.org/models/object_detection/'
 
