@@ -2,18 +2,18 @@ from numpy import random
 import numpy as np
 
 
-def random_rpn(gts, need_same=False, number=100, scale_random=[0.8, 1.8], offset=[0.03, 0.03]):
+def random_rpn(gts, need_same=True, number=100, scale_random=[0.8, 1.8], offset=[0.1, 0.1]):
     x_min = []
     y_min = []
     x_max = []
     y_max = []
     num_ = number
     if need_same:
-        gts=list(gts)
+        gts = list(gts)
         num_ //= len(gts)
     for index, gt in enumerate(gts):
-        if need_same and index == (len(gts) - 1):
-            num_ = number - num_ * (len(gts) - 1)
+        # if need_same and index == (len(gts) - 1):
+        #     num_ = number - num_ * (len(gts) - 1)
         for i in range(num_):
             x_ = random.uniform(scale_random[0], scale_random[1])
             y_ = random.uniform(scale_random[0], scale_random[1])
@@ -22,6 +22,9 @@ def random_rpn(gts, need_same=False, number=100, scale_random=[0.8, 1.8], offset
 
             y_offset_random = (gt[2] - gt[0]) * (y_ - 1) / 2
             x_offset_random = (gt[3] - gt[1]) * (x_ - 1) / 2
+
+            offset[1] = (gt[2] - gt[0]) * offset[1]
+            offset[0] = (gt[3] - gt[1]) * offset[0]
 
             y_offset_random += offset[1] if y_offset_random > 0 else -1 * offset[1]
             x_offset_random += offset[0] if x_offset_random > 0 else -1 * offset[0]
